@@ -55,28 +55,40 @@ function playRound(playerMove, computerMove) {
 }
 
 function game() {
-    console.log("Welcome to rock, paper, scissors!");
+    const buttons = document.querySelectorAll('button');
 
-    for (let i=0; i < 5; i++) {
-        console.log("Round " + (i+1));
-        
-        let player = playerPlay();
-        let computer = computerPlay();
-        
-        console.log("Your move: " + player);
-        console.log("Computer's move: " + computer);
-        
-        console.log(playRound(player, computer));
-    }
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
 
-    console.log("Final Score: Player " + playerScore + ", Computer: " + computerScore);
-    if (playerScore > computerScore) {
-        console.log("You Win the Game!");
-    } else if (computerScore > playerScore) {
-        console.log("You Lose the Game!");
-    } else {
-        console.log("The Game is a Tie");
+            const resultsDiv = document.getElementById('results');
+            const score = document.getElementById('score');
+
+            let playerMove = button.id;
+            let computerMove = computerPlay();
+            let result = playRound(button.id, computerMove);
+            resultsDiv.textContent = "You chose: " + playerMove + ", Computer chose: " + computerMove + ", " + result;
+            updateScore(score);
+            let winner = checkWin();
+            if (winner) {
+                const finalResultsDiv = document.getElementById('final-results');
+                finalResultsDiv.textContent = "The winner is " + winner; 
+            }
+        });
+    });
+}
+
+function updateScore(score) {
+    score.textContent = "Player: " + playerScore + ", Computer: " + computerScore;
+}
+
+function checkWin() {
+    if (playerScore == 5) {
+        return "Player";
+    } else if (computerScore == 5) {
+        return "Computer";
     }
+    return null;
 }
 
 game();
+
